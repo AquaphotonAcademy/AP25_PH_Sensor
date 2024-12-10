@@ -1,0 +1,6 @@
+Invoking command in '/home/habiba/AP25_PH_Sensor/src/build/micro_ros_agent': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/habiba/AP25_PH_Sensor/src/micro-ROS-Agent/micro_ros_agent -DCMAKE_INSTALL_PREFIX=/home/habiba/AP25_PH_Sensor/src/install/micro_ros_agent
+Invoked command in '/home/habiba/AP25_PH_Sensor/src/build/micro_ros_agent' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/habiba/AP25_PH_Sensor/src/micro-ROS-Agent/micro_ros_agent -DCMAKE_INSTALL_PREFIX=/home/habiba/AP25_PH_Sensor/src/install/micro_ros_agent
+Invoking command in '/home/habiba/AP25_PH_Sensor/src/build/micro_ros_agent': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/habiba/AP25_PH_Sensor/src/build/micro_ros_agent -- -j12 -l12
+Invoked command in '/home/habiba/AP25_PH_Sensor/src/build/micro_ros_agent' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/habiba/AP25_PH_Sensor/src/build/micro_ros_agent -- -j12 -l12
+Invoking command in '/home/habiba/AP25_PH_Sensor/src/build/micro_ros_agent': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/habiba/AP25_PH_Sensor/src/build/micro_ros_agent
+Invoked command in '/home/habiba/AP25_PH_Sensor/src/build/micro_ros_agent' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/habiba/AP25_PH_Sensor/src/build/micro_ros_agent

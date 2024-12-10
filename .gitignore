@@ -1,0 +1,10 @@
+# Ignore build, install, and log directories at the root level
+/build/
+/install/
+/log/
+
+# Ignore micro-ros-agent, build, log, and install directories inside the src folder
+/src/micro-ROS-Agent/
+/src/build/
+/src/install/
+/src/log/
