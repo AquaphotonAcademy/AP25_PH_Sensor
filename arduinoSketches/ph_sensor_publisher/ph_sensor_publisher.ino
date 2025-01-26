@@ -7,7 +7,7 @@
 
 #include <std_msgs/msg/float32.h>
 
-#define SensorPin A0 //Analog pin for PH sensor
+#define SensorPin 25 //Analog pin for PH sensor
 #define Offset 0.00 // for calibration
 #define samplingInterval 20 //sampling interval in ms
 #define ArrayLength 40 //length of sample for averaging
@@ -23,6 +23,8 @@ rclc_support_t support;
 rcl_allocator_t allocator;
 rcl_node_t node;
 
+#define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){error_loop();}}
+#define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){}}
 
 void error_loop(){
   while(1){
@@ -78,7 +80,9 @@ double avergearray(int* arr, int number){
 
 void setup() {
   
-  Serial.begin(9600);
+  Serial.begin(115200);
+  delay(500);
+
 
   pinMode(LED_PIN,OUTPUT);
   digitalWrite(LED_PIN,LOW);
@@ -122,18 +126,19 @@ void loop() {
 
     if(pHArrayIndex==ArrayLength)pHArrayIndex=0;
 
-    voltage = avergearray(pHArray, ArrayLength)*5.0/1024;
+    voltage = avergearray(pHArray, ArrayLength)*3.3/4095;
     pHValue = 3.5*voltage+Offset;
+
+    // // Debug output
+    Serial.print("Voltage: ");
+    Serial.println(voltage);
+    Serial.print("pH Value: ");
+    Serial.println(pHValue);
 
     msg.data= pHValue;
     
     RCSOFTCHECK(rcl_publish(&publisher,&msg, NULL));
 
-    // // Debug output
-    // Serial.print("Voltage: ");
-    // Serial.println(voltage);
-    // Serial.print("pH Value: ");
-    // Serial.println(pHValue);
 
     samplingTime=millis();
  }

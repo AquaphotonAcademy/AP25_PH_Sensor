@@ -1,4 +1,3 @@
-#include <DFRobot_PH.h>
 
 /*
  # This sample code is used to test the pH meter Pro V1.0.
@@ -8,7 +7,7 @@
  # SKU    : SEN0169
 */
 
-#define SensorPin A0            //pH meter Analog output to Arduino Analog Input 0
+#define SensorPin 25        //pH meter Analog output to Arduino Analog Input 0
 #define Offset 0.00            //deviation compensate
 #define LED 13
 #define samplingInterval 20
@@ -16,13 +15,13 @@
 #define ArrayLenth  40    //times of collection
 int pHArray[ArrayLenth];   //Store the average value of the sensor feedback
 int pHArrayIndex=0;
-void setup(void)
+void setup()
 {
   pinMode(LED,OUTPUT);
-  Serial.begin(9600);
-  Serial.println("pH meter experiment!");    //Test the serial monitor
+  Serial.begin(115200);
+  Serial.println("pH meter z!");    //Test the serial monitor
 }
-void loop(void)
+void loop()
 {
   static unsigned long samplingTime = millis();
   static unsigned long printTime = millis();
@@ -31,7 +30,7 @@ void loop(void)
   {
       pHArray[pHArrayIndex++]=analogRead(SensorPin);
       if(pHArrayIndex==ArrayLenth)pHArrayIndex=0;
-      voltage = avergearray(pHArray, ArrayLenth)*5.0/1024;
+      voltage = avergearray(pHArray, ArrayLenth)/4096.0 * 5.0;
       pHValue = 3.5*voltage+Offset;
       samplingTime=millis();
   }
