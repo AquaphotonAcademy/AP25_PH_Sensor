@@ -7,7 +7,7 @@
 
 #include <std_msgs/msg/float32.h>
 
-#define SensorPin 25 //Analog pin for PH sensor
+#define SensorPin 34 //Analog pin for PH sensor
 #define Offset 0.00 // for calibration
 #define samplingInterval 20 //sampling interval in ms
 #define ArrayLength 40 //length of sample for averaging
@@ -15,7 +15,6 @@
 
 int pHArray[ArrayLength];
 int pHArrayIndex=0;
-
 
 rcl_publisher_t publisher;
 std_msgs__msg__Float32 msg;
@@ -29,10 +28,10 @@ rcl_node_t node;
 void error_loop(){
   while(1){
     digitalWrite(LED_PIN, !digitalRead(LED_PIN));
+    // ESP32.restart;
     delay(100);
   }
 }
-
 
 double avergearray(int* arr, int number){
   int i,max,min;
@@ -40,7 +39,6 @@ double avergearray(int* arr, int number){
   long amount=0;
 
   if(number<=0){
-    Serial.println("Error: Invalid array size for averaging!!/n");
     error_loop();
     return 0;
   }
@@ -76,19 +74,11 @@ double avergearray(int* arr, int number){
   return avg;
 }
 
-
-
 void setup() {
-  
   Serial.begin(115200);
-  delay(500);
-
 
   pinMode(LED_PIN,OUTPUT);
   digitalWrite(LED_PIN,LOW);
-
-  Serial.println("Initializing pH Sensor...");
-
 
   set_microros_transports();
 
@@ -108,16 +98,11 @@ void setup() {
     "ph_value"));
 
   msg.data = 0;
- 
- }
-
+}
 
 void loop() {
-
-  delay(100);
-  
-
   static unsigned long samplingTime = millis();
+  static unsigned long lastPublishTime = 0;
   static float pHValue,voltage;
 
   if(millis()-samplingTime > samplingInterval)
@@ -126,23 +111,17 @@ void loop() {
 
     if(pHArrayIndex==ArrayLength)pHArrayIndex=0;
 
-    voltage = avergearray(pHArray, ArrayLength)*3.3/4095;
+    voltage = avergearray(pHArray, ArrayLength)*5.0/4095;
     pHValue = 3.5*voltage+Offset;
 
-    // // Debug output
-    Serial.print("Voltage: ");
-    Serial.println(voltage);
-    Serial.print("pH Value: ");
-    Serial.println(pHValue);
-
     msg.data= pHValue;
-    
-    RCSOFTCHECK(rcl_publish(&publisher,&msg, NULL));
-
 
     samplingTime=millis();
- }
+  }
+
+  // Non-blocking delay for publishing
+  if (millis() - lastPublishTime >= 200) {
+    RCSOFTCHECK(rcl_publish(&publisher, &msg, NULL));
+    lastPublishTime = millis();
+  }
 }
-
-
-
